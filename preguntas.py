@@ -23,7 +23,7 @@ def pregunta_01():
     """
     data = open ('data.csv').readlines()
     data = [row[0:-1] for row in data]
-    data = [row.split('\t') for row in f]
+    data = [row.split('\t') for row in data]
     data = [row[1] for row in data]
     data = [int(row) for row in data ]
     suma = sum(data)
@@ -71,20 +71,6 @@ def pregunta_03():
     ]
 
     """
-    # from operator import itemgetter
-# f=open ('data.csv').readlines()
-# f=[row[0:-1] for row in f]
-# f = [row.split('\t') for row in f]
-# f=list(sorted(f, key=itemgetter(0)))
-# diccionario={}
-# for lista in f:
-#     if lista[0] in diccionario:
-#         diccionario[lista[0]]+=int(lista[1])
-#     else:
-#         diccionario[lista[0]]=int(lista[1])
-# for key,value in diccionario.items():
-#     print(f'{key},{value}')
-
 
     data =open('data.csv', 'r').readlines()
     data = [row[0:-1] for row in data]
@@ -97,7 +83,7 @@ def pregunta_03():
         suma=0
         for lista in list(group):
             suma+= int(lista[1])
-            print(f'{key},{suma}')
+        print(f'{key},{suma}')
 
 
 def pregunta_04():
