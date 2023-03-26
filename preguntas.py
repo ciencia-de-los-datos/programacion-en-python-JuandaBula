@@ -21,7 +21,14 @@ def pregunta_01():
     214
 
     """
-    return
+    data = open ('data.csv').readlines()
+    data = [row[0:-1] for row in data]
+    data = [row.split('\t') for row in f]
+    data = [row[1] for row in data]
+    data = [int(row) for row in data ]
+    suma = sum(data)
+
+    return suma
 
 
 def pregunta_02():
@@ -39,7 +46,14 @@ def pregunta_02():
     ]
 
     """
-    return
+    import itertools
+    from operator import itemgetter
+    data =open ('data.csv').readlines()
+    data = [row[0:-1] for row in data]
+    data = [row.split('\t') for row in data]
+
+    for key, group in itertools.groupby(sorted(data, key=itemgetter(0)), itemgetter(0)):
+        print(f'{key},{len(list(group))}')
 
 
 def pregunta_03():
@@ -57,7 +71,33 @@ def pregunta_03():
     ]
 
     """
-    return
+    # from operator import itemgetter
+# f=open ('data.csv').readlines()
+# f=[row[0:-1] for row in f]
+# f = [row.split('\t') for row in f]
+# f=list(sorted(f, key=itemgetter(0)))
+# diccionario={}
+# for lista in f:
+#     if lista[0] in diccionario:
+#         diccionario[lista[0]]+=int(lista[1])
+#     else:
+#         diccionario[lista[0]]=int(lista[1])
+# for key,value in diccionario.items():
+#     print(f'{key},{value}')
+
+
+    data =open('data.csv', 'r').readlines()
+    data = [row[0:-1] for row in data]
+    data = [row.split('\t') for row in data]
+
+    import itertools
+    from operator import itemgetter
+
+    for key, group in itertools.groupby(sorted(data, key=itemgetter(0)), itemgetter(0)):
+        suma=0
+        for lista in list(group):
+            suma+= int(lista[1])
+            print(f'{key},{suma}')
 
 
 def pregunta_04():
