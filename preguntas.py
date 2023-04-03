@@ -11,6 +11,10 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+import csv
+
+data= open('data.csv' , newline='')  
+data = csv.reader(data, delimiter='\t')
 
 
 def pregunta_01():
@@ -21,19 +25,17 @@ def pregunta_01():
     214
 
     """
-    data = open ('data.csv').readlines()
-    data = [row[0:-1] for row in data]
-    data = [row.split('\t') for row in data]
-    data = [row[1] for row in data]
-    data = [int(row) for row in data ]
-    suma = sum(data)
+    acum =0
+    for col in data:
+        num =  (int(col[1]))
+        acum += num
+    return ((acum))
 
-    return suma
 
 
 def pregunta_02():
     """
-    Retorne la cantidad de registros por cada letra de la primera columna como la lista
+    Retorne la cantidad de registros por cada letra de la primera columna como la lis
     de tuplas (letra, cantidad), ordendas alfabéticamente.
 
     Rta/
@@ -45,20 +47,21 @@ def pregunta_02():
         ("E", 14),
     ]
 
-    """
-    import itertools
-    from operator import itemgetter
-    data =open ('data.csv').readlines()
-    data = [row[0:-1] for row in data]
-    data = [row.split('\t') for row in data]
+        """
+    from collections import Counter
+        
+    lis = list()
+    for row in data:
+        lis.append(row[0])
+        lis.sort()
+    out=list(Counter(lis).items())
+    return(out)
 
-    for key, group in itertools.groupby(sorted(data, key=itemgetter(0)), itemgetter(0)):
-        print(f'{key},{len(list(group))}')
 
 
 def pregunta_03():
     """
-    Retorne la suma de la columna 2 por cada letra de la primera columna como una lista
+    Retorne la suma de la columna 2 por cada letra de la primera columna como una lis
     de tuplas (letra, suma) ordendas alfabeticamente.
 
     Rta/
@@ -71,19 +74,30 @@ def pregunta_03():
     ]
 
     """
+    lis=list()
+    acum_a=0
+    acum_b=0
+    acum_c=0
+    acum_d=0
+    acum_e=0
+    letra=''
+    num=0
+    for row in data:
+        letra,num,*_=row
+        if letra == 'A':
+            acum_a +=  int(num)
+        if letra == 'B':
+            acum_b +=  int(num)
+        if letra == 'C':
+            acum_c +=  int(num)
+        if letra == 'D':
+            acum_d +=  int(num)
+        if letra == 'E':
+            acum_e +=  int(num)
+    salida=list([('A',acum_a),('B',acum_b),('C',acum_c),('D',acum_d),('E',acum_e)])
 
-    data =open('data.csv', 'r').readlines()
-    data = [row[0:-1] for row in data]
-    data = [row.split('\t') for row in data]
+    return salida
 
-    import itertools
-    from operator import itemgetter
-
-    for key, group in itertools.groupby(sorted(data, key=itemgetter(0)), itemgetter(0)):
-        suma=0
-        for lista in list(group):
-            suma+= int(lista[1])
-        print(f'{key},{suma}')
 
 
 def pregunta_04():
@@ -108,12 +122,22 @@ def pregunta_04():
     ]
 
     """
-    return
+    from collections import Counter
+
+    lis=list()
+    for row in data:
+        a,b,fecha,*c=row
+        mes=fecha.split('-')[1]
+        lis.append(mes)
+    salida=sorted(list(Counter(lis).items()))
+    
+    return salida
+
 
 
 def pregunta_05():
     """
-    Retorne una lista de tuplas con el valor maximo y minimo de la columna 2 por cada
+    Retorne una lis de tuplas con el valor maximo y minimo de la columna 2 por cada
     letra de la columa 1.
 
     Rta/
@@ -126,7 +150,31 @@ def pregunta_05():
     ]
 
     """
-    return
+    a=list()
+    b=list()
+    c=list()
+    d=list()
+    e=list()
+    for row in data:
+        letra,num,*_ =row
+        if letra =='A':
+            a+=num
+        if letra =='B':
+            b+=num
+        if letra =='C':
+            c+=num
+        if letra =='D':
+            d+=num
+        if letra =='E':
+            e+=num
+    out:list=([('A',int(max(a)),int(min(a))),
+            ('B',int(max(b)),int(min(b))),
+            ('C',int(max(c)),int(min(c))),
+            ('D',int(max(d)),int(min(d))),
+            ('E',int(max(e)),int(min(e)))          
+            ])
+    return out
+
 
 
 def pregunta_06():
@@ -151,13 +199,28 @@ def pregunta_06():
     ]
 
     """
-    return
+    dic={}
+    for row in data:
+        column = row[4]
+        for key_value in column.split(","):
+            key, value = key_value.split(":")
+            value = int(value)
+            if key in dic:
+                dic[key].append(value)
+            else:
+                dic[key] = [value]
+        out = []
+        for key, values in sorted((dic.items())):
+            out.append((key, min(values), max(values)))
+
+    return out
+
 
 
 def pregunta_07():
     """
-    Retorne una lista de tuplas que asocien las columnas 0 y 1. Cada tupla contiene un
-    valor posible de la columna 2 y una lista con todas las letras asociadas (columna 1)
+    Retorne una lis de tuplas que asocien las columnas 0 y 1. Cada tupla contiene un
+    valor posible de la columna 2 y una lis con todas las letras asociadas (columna 1)
     a dicho valor de la columna 2.
 
     Rta/
@@ -175,13 +238,24 @@ def pregunta_07():
     ]
 
     """
-    return
+    dic={}
+    for row in data:
+        column1=row[0] 
+        column2=int(row[1])
+        if column2 in dic:
+            dic[column2].append(column1)
+        else:
+            dic[column2]=[column1]
+    out=sorted(dic.items())
+
+    return out
+
 
 
 def pregunta_08():
     """
-    Genere una lista de tuplas, donde el primer elemento de cada tupla contiene  el valor
-    de la segunda columna; la segunda parte de la tupla es una lista con las letras
+    Genere una lis de tuplas, donde el primer elemento de cada tupla contiene  el valor
+    de la segunda columna; la segunda parte de la tupla es una lis con las letras
     (ordenadas y sin repetir letra) de la primera  columna que aparecen asociadas a dicho
     valor de la segunda columna.
 
@@ -200,7 +274,24 @@ def pregunta_08():
     ]
 
     """
-    return
+    dic={}
+    out=[]
+    for row in data:
+        column1=row[0]
+        column2=int(row[1])
+        if column2 in dic:
+            if column1 not in dic[column2]:
+                dic[column2].append(column1)
+        else:
+            dic[column2]=[column1]
+
+    lis=sorted(dic.items())
+    for item in lis:
+        index=item[0]
+        out.append((index,    sorted(item[1])))
+
+    return out
+
 
 
 def pregunta_09():
@@ -223,12 +314,23 @@ def pregunta_09():
     }
 
     """
-    return
+    from collections import Counter
+
+    lis:list =[]
+    for row in data:
+        column = row[4]
+        for key_value in column.split(","):
+            key, value = key_value.split(":")
+            lis.append(key)
+            lis.sort()
+    out=dict(Counter(lis))
+    return out
+
 
 
 def pregunta_10():
     """
-    Retorne una lista de tuplas contengan por cada tupla, la letra de la columna 1 y la
+    Retorne una lis de tuplas contengan por cada tupla, la letra de la columna 1 y la
     cantidad de elementos de las columnas 4 y 5.
 
     Rta/
@@ -244,7 +346,15 @@ def pregunta_10():
 
 
     """
-    return
+    lis=[]
+    for row in data:
+        letra=row[0]
+        column4=row[3]
+        column5=row[4]
+        lis.append(tuple((letra,len(column4.split(',')),len(column5.split(',')))))
+    return lis
+
+
 
 
 def pregunta_11():
@@ -265,7 +375,21 @@ def pregunta_11():
 
 
     """
-    return
+    lis=[]
+    dic={}
+    for row in data:
+        num=int(row[1])
+        letra=row[3].split(',')
+        for item in letra:
+            if item in dic:
+                dic[item].append(num)
+            else:
+                dic[item]=[num]
+    for key, value in sorted((dic.items())):
+        lis.append((key,sum(value)))
+    out=dict(lis)
+    return out
+
 
 
 def pregunta_12():
@@ -283,4 +407,18 @@ def pregunta_12():
     }
 
     """
-    return
+    lis=[]
+    dic={}
+    for row in data:
+        key=row[0]
+        letra=row[4].split(',')
+        for item in letra:
+            if key in dic:
+                dic[key].append(int(item.split(':')[1]))
+            else:
+                dic[key]=[int(item.split(':')[1])]
+
+    for key, value in sorted((dic.items())):
+        lis.append((key,sum(value)))
+    out=dict(lis)
+    return out
